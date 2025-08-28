@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health AI Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Health AI Prediction</h2>
+
+    <label>Heart Rate (BPM):</label>
+    <input type="number" id="heartRate" placeholder="Enter heart rate">
+
+    <label>Respiration Rate (BPM):</label>
+    <input type="number" id="respirationRate" placeholder="Enter respiration rate">
+
+    <label>Fatigue Index:</label>
+    <input type="number" id="fatigueIndex" placeholder="Enter fatigue index">
+
+    <label>Stress Level:</label>
+    <input type="number" id="stressLevel" placeholder="Enter stress level">
+
+    <label>Blood Pressure:</label>
+    <input type="text" id="bloodPressure" placeholder="Enter blood pressure (e.g., 120/80)">
+
+    <button onclick="getPrediction()">Predict Disease</button>
+
+    <div id="result"></div>
+
+    <script>
+        function getPrediction() {
+            var healthData = {
+                "Heart Rate": document.getElementById("heartRate").value + " BPM",
+                "Respiration Rate": document.getElementById("respirationRate").value + " BPM",
+                "Fatigue Index": document.getElementById("fatigueIndex").value,
+                "Stress Level": document.getElementById("stressLevel").value,
+                "Blood Pressure": document.getElementById("bloodPressure").value
+            };
+
+            $.ajax({
+                url: "/get_prediction",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(healthData),
+                success: function(response) {
+                    document.getElementById("result").innerHTML = "Prediction: " + response.prediction;
+                },
+                error: function() {
+                    document.getElementById("result").innerHTML = "Error retrieving prediction.";
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
